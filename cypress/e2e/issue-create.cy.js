@@ -1,3 +1,6 @@
+import { faker, fakerEN } from '@faker-js/faker';
+
+
 describe('Issue create', () => {
   beforeEach(() => {
     cy.visit('/');
@@ -65,4 +68,63 @@ describe('Issue create', () => {
       cy.get('[data-testid="form-field:title"]').should('contain', 'This field is required');
     });
   });
+
+  it('Assignment 2 test 1 - Adding a new issue', () => {
+    //System finds modal for creating issue and does next steps inside of it
+    cy.get('[data-testid="modal:issue-create"]').within(() => {      
+      cy.get('[data-testid="select:type"]').click();
+      cy.get('[data-testid="select-option:Bug"]')
+          .trigger('click');            
+      cy.get('.ql-editor').type('My bug description');
+      cy.get('input[name="title"]').type('Bug');      
+      cy.get('[data-testid="select:reporterId"]').click();
+      cy.get('[data-testid="select-option:Pickle Rick"]').click();
+      cy.get('[data-testid="select:priority"]').click();
+      cy.get('[data-testid="select-option:Highest"]').click();
+      cy.get('button[type="submit"]').click();
+    });
+
+    cy.get('[data-testid="modal:issue-create"]').should('not.exist');
+    cy.contains('Issue has been successfully created.').should('be.visible');  
+    cy.reload();
+    cy.contains('Issue has been successfully created.').should('not.exist');
+    cy.get('[data-testid="board-list:backlog').should('be.visible').and('have.length', '1').within(() => {
+      cy.get('[data-testid="list-issue"]')
+          .should('have.length', '5')
+          .first()
+          .find('p')
+          .contains('Bug');
+      cy.get('[data-testid="avatar:Pickle Rick"]').should('be.visible');
+      cy.get('[data-testid="icon:story"]').should('be.visible');
+    });
+
+  });
+
+  it.only('Assignment 2 test 2 - Adding a new issue with random data plugin', () => {
+    //System finds modal for creating issue and does next steps inside of it
+    cy.get('[data-testid="modal:issue-create"]').within(() => {      
+      cy.contains('Task').should('be.visible');
+      const randomDescription = faker.animal.bear()
+      cy.get('.ql-editor').type(randomDescription);
+      const randomTitle = faker.word.noun();
+      cy.get('input[name="title"]').type(randomTitle);
+      cy.get('[data-testid="select:reporterId"]').click();
+      cy.get('[data-testid="select-option:Baby Yoda"]').click();
+      cy.get('[data-testid="select:priority"]').click();
+      cy.get('[data-testid="select-option:Low"]').click();
+      cy.get('button[type="submit"]').click();
+    });
+
+    cy.get('[data-testid="modal:issue-create"]').should('not.exist');
+    cy.contains('Issue has been successfully created.').should('be.visible');  
+    cy.reload();
+    cy.contains('Issue has been successfully created.').should('not.exist');
+    cy.get('[data-testid="board-list:backlog').should('be.visible').and('have.length', '1').within(() => {
+      cy.get('[data-testid="list-issue"]')
+          .should('have.length', '5')    
+    });
+    
+  });
+
+
 });
