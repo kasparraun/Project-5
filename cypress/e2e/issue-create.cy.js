@@ -100,7 +100,7 @@ describe('Issue create', () => {
 
   });
 
-  it.only('Assignment 2 test 2 - Adding a new issue with random data plugin', () => {
+  it('Assignment 2 test 2 - Adding a new issue with random data plugin', () => {
     //System finds modal for creating issue and does next steps inside of it
     cy.get('[data-testid="modal:issue-create"]').within(() => {      
       cy.contains('Task').should('be.visible');
