@@ -1,4 +1,6 @@
 import { faker, fakerEN } from '@faker-js/faker';
+const randomDescription = faker.animal.bear()
+const randomTitle = faker.word.noun();
 
 
 describe('Issue create', () => {
@@ -100,13 +102,11 @@ describe('Issue create', () => {
 
   });
 
-  it('Assignment 2 test 2 - Adding a new issue with random data plugin', () => {
+  it.only('Assignment 2 test 2 - Adding a new issue with random data plugin', () => {
     //System finds modal for creating issue and does next steps inside of it
     cy.get('[data-testid="modal:issue-create"]').within(() => {      
       cy.contains('Task').should('be.visible');
-      const randomDescription = faker.animal.bear()
       cy.get('.ql-editor').type(randomDescription);
-      const randomTitle = faker.word.noun();
       cy.get('input[name="title"]').type(randomTitle);
       cy.get('[data-testid="select:reporterId"]').click();
       cy.get('[data-testid="select-option:Baby Yoda"]').click();
@@ -121,7 +121,7 @@ describe('Issue create', () => {
     cy.contains('Issue has been successfully created.').should('not.exist');
     cy.get('[data-testid="board-list:backlog').should('be.visible').and('have.length', '1').within(() => {
       cy.get('[data-testid="list-issue"]')
-          .should('have.length', '5')    
+          .should('have.length', '5');   
     });
     
   });
