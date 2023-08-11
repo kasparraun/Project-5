@@ -20,7 +20,7 @@ describe('Issue delete', () => {
     });
   });
 
-  it.only('Assignment 3 test 2 - Cancel deleting of issue', () => {
+  it('Assignment 3 test 2 - Cancel deleting of issue', () => {
     cy.get('[data-testid="icon:trash"]').click();
     cy.get('button[class="sc-bwzfXH ewzfNn sc-kGXeez bLOzZQ"]').click();
     //Assert, that deletion confirmation dialogue is not visible.
